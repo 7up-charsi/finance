@@ -1,0 +1,6 @@
+{
+  "printWidth": 80,
+  "endOfLine": "crlf",
+  "singleQuote": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
