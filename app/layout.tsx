@@ -1,3 +1,4 @@
+import { QueryProvider } from '@/providers/react-query';
 import '@/styles/globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
@@ -14,8 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang='en'>
-        <body className='bg-background text-foreground'>{children}</body>
+      <html lang="en">
+        <body className="bg-background text-foreground">
+          <QueryProvider>{children}</QueryProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
