@@ -1,5 +1,10 @@
-import { createTheme, registerAllStyles } from '@typeweave/theme';
+import {
+  createColorScale,
+  createTheme,
+  registerAllStyles,
+} from '@typeweave/theme';
 import type { Config } from 'tailwindcss';
+import { mauve, mauveDark } from '@radix-ui/colors';
 
 const config: Config = {
   content: [
@@ -8,15 +13,16 @@ const config: Config = {
     registerAllStyles(),
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-    },
+    extend: {},
   },
-  plugins: [createTheme()],
+  plugins: [
+    createTheme({
+      themes: {
+        light: { colors: { muted: createColorScale(mauve) } },
+        dark: { colors: { muted: createColorScale(mauveDark) } },
+      },
+    }),
+  ],
 };
 export default config;
 

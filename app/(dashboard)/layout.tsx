@@ -8,10 +8,10 @@ export default function DashboardLayout(props: DashboardLayoutProps) {
   const { children } = props;
 
   return (
-    <>
+    <div className="mx-auto max-w-screen-2xl">
       <Header />
 
-      <main className="px-3 lg:px-14">{children}</main>
-    </>
+      <main className="px-7 lg:px-14">{children}</main>
+    </div>
   );
 }

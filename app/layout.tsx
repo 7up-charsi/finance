@@ -2,6 +2,7 @@ import { QueryProvider } from '@/providers/react-query';
 import '@/styles/globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
+import { Bounce, ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: '',
@@ -18,6 +19,21 @@ export default function RootLayout({
       <html lang="en">
         <body className="bg-background text-foreground">
           <QueryProvider>{children}</QueryProvider>
+
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+            stacked
+          />
         </body>
       </html>
     </ClerkProvider>

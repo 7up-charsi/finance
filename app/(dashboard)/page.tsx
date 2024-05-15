@@ -1,4 +1,4 @@
-export default function Home() {
-  return <>Dashboard page</>;
+export default function HomePage() {
+  return <>HomePage</>;
 }
 

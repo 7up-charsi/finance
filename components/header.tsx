@@ -44,7 +44,7 @@ export const Header = (props: HeaderProps) => {
   const { isLoaded, user } = useUser();
 
   return (
-    <header className="mx-auto max-w-screen-2xl bg-gradient-to-b from-primary-10 to-primary-9 px-10 py-4 pb-32">
+    <header className="bg-gradient-to-b from-primary-10 to-primary-9 px-7 py-4 pb-32 lg:px-14">
       <div className="flex h-12 items-center justify-between gap-2 lg:justify-start">
         <Logo />
 
