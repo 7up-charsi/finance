@@ -33,8 +33,8 @@ importers:
         specifier: ^5.36.1
         version: 5.36.1(react@18.3.1)
       '@typeweave/react':
-        specifier: ^2.0.0
-        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.3)
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.3)
       '@typeweave/react-utils':
         specifier: ^1.1.3
         version: 1.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -854,8 +854,8 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@typeweave/react@2.0.0':
-    resolution: {integrity: sha512-Avt/Uozg3gk1NZXbRhQLi8S8j4mu0ZUIej9dZVl0MMhLAcf0jfXN+wa1HY8pY/ruRvU6FeYJOY2c4xpUorpFng==}
+  '@typeweave/react@2.0.1':
+    resolution: {integrity: sha512-XuOOUE6zqzp52oJhs6Oz0KlCuQgVwLVBApK7S+bBKPCkYxR82NnMfzZ+XDPXW/AisPoLnrJmFTqu+mIuoVlocQ==}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
@@ -1262,8 +1262,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.4.769:
-    resolution: {integrity: sha512-bZu7p623NEA2rHTc9K1vykl57ektSPQYFFqQir8BOYf6EKOB+yIsbFB9Kpm7Cgt6tsLr9sRkqfqSZUw7LP1XxQ==}
+  electron-to-chromium@1.4.770:
+    resolution: {integrity: sha512-ONwOsDiVvV07CMsyH4+dEaZ9L79HMH/ODHnDS3GkIhgNqdDHJN2C18kFb0fBj0RXpQywsPJl6k2Pqg1IY4r1ig==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3159,7 +3159,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@typeweave/react@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.3)':
+  '@typeweave/react@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.3)':
     dependencies:
       '@floating-ui/react-dom': 2.0.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@typeweave/react-utils': 1.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3338,7 +3338,7 @@ snapshots:
   browserslist@4.23.0:
     dependencies:
       caniuse-lite: 1.0.30001618
-      electron-to-chromium: 1.4.769
+      electron-to-chromium: 1.4.770
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
 
@@ -3539,7 +3539,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.4.769: {}
+  electron-to-chromium@1.4.770: {}
 
   emoji-regex@8.0.0: {}
 

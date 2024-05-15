@@ -21,6 +21,7 @@ import {
 import { honoClient } from '@/lib/hono';
 import { InferRequestType, InferResponseType } from 'hono';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { LoadingButton } from './loading-button';
 
 const formScehma = z.object({
   name: z.string().min(1, 'Name must contain at least 1 character(s)'),
@@ -145,13 +146,14 @@ export const NewAccount = (props: NewAccountProps) => {
                       </Button>
                     </DrawerClose>
 
-                    <Button
+                    <LoadingButton
                       type="submit"
-                      disabled={mutation.isPending}
                       color="success"
+                      disabled={mutation.isPending}
+                      loading={mutation.isPending}
                     >
                       add account
-                    </Button>
+                    </LoadingButton>
                   </div>
                 </form>
               </FocusTrap>
