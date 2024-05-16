@@ -10,24 +10,24 @@ import {
   DrawerRootMethods,
   FocusTrap,
 } from '@typeweave/react';
-import { useUpdateAccountDrawerState } from '@/hooks/state/use-update-account-drawer-state';
+import { useUpdateCategoryDrawer } from '../hooks/use-update-category-drawer';
 
-export interface UpdateAccountDrawerProps {
+export interface UpdateCategoryDrawerProps {
   children: React.ReactNode;
 }
 
-const displayName = 'UpdateAccountDrawer';
+const displayName = 'UpdateCategoryDrawer';
 
-export const UpdateAccountDrawer = React.forwardRef<
+export const UpdateCategoryDrawer = React.forwardRef<
   DrawerRootMethods,
-  UpdateAccountDrawerProps
->((props: UpdateAccountDrawerProps, forwardedRef) => {
+  UpdateCategoryDrawerProps
+>((props: UpdateCategoryDrawerProps, forwardedRef) => {
   const { children } = props;
 
   const titleId = React.useId();
   const descriptionId = React.useId();
 
-  const { open, onOpenChange } = useUpdateAccountDrawerState();
+  const { open, onOpenChange } = useUpdateCategoryDrawer();
 
   return (
     <DrawerRoot ref={forwardedRef} open={open} onOpenChange={onOpenChange}>
@@ -47,13 +47,13 @@ export const UpdateAccountDrawer = React.forwardRef<
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div id={titleId} className="font-semibold capitalize">
-                    update account
+                    update category
                   </div>
 
                   <DrawerClose>
                     <Button
                       isIconOnly
-                      aria-label="close new account drawer"
+                      aria-label="close new category drawer"
                       size="sm"
                       color="danger"
                       variant="text"
@@ -67,7 +67,7 @@ export const UpdateAccountDrawer = React.forwardRef<
                   id={descriptionId}
                   className="text-sm first-letter:uppercase"
                 >
-                  update your existing account
+                  update your existing category
                 </div>
               </div>
 
@@ -80,4 +80,4 @@ export const UpdateAccountDrawer = React.forwardRef<
   );
 });
 
-UpdateAccountDrawer.displayName = displayName;
+UpdateCategoryDrawer.displayName = displayName;

@@ -1,20 +1,20 @@
-import { useUpdateAccountDrawerState } from '@/hooks/state/use-update-account-drawer-state';
+import { useUpdateAccountDrawer } from '@/features/accounts/hooks/use-update-account-drawer';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { Button } from '@typeweave/react';
 import { PencilIcon } from 'lucide-react';
 import React from 'react';
 
-export interface UpdateAccountActionProps {
+export interface UpdateActionProps {
   name: string;
   id: string;
 }
 
-const displayName = 'UpdateAccountAction';
+const displayName = 'UpdateAction';
 
-export const UpdateAccountAction = (props: UpdateAccountActionProps) => {
+export const UpdateAction = (props: UpdateActionProps) => {
   const { id, name } = props;
 
-  const open = useUpdateAccountDrawerState((state) => state.onOpen);
+  const open = useUpdateAccountDrawer((state) => state.onOpen);
 
   const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
 
@@ -48,4 +48,4 @@ export const UpdateAccountAction = (props: UpdateAccountActionProps) => {
   );
 };
 
-UpdateAccountAction.displayName = displayName;
+UpdateAction.displayName = displayName;

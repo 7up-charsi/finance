@@ -9,7 +9,7 @@ type RequestType = InferRequestType<
   typeof honoClient.api.accounts.$post
 >['json'];
 
-export const useCreateAccountMutation = (options?: MutationOptions) => {
+export const useCreateAccount = (options?: MutationOptions) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();

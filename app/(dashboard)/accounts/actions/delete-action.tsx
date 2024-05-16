@@ -1,27 +1,27 @@
 'use client';
 
 import React from 'react';
-import { AlertDialog } from './alert-dialog';
 import { AlertDialogRootMethods, Button } from '@typeweave/react';
 import { TrashIcon } from 'lucide-react';
-import { useDeleteAccountMutation } from '@/hooks/mutation/use-delete-account-mutation';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
-import { Loader } from './loader';
+import { AlertDialog } from '@/components/alert-dialog';
+import { Loader } from '@/components/loader';
+import { useDeleteAccount } from '@/features/accounts/api-hooks/use-delete-account';
 
-export interface DeleteAccountActionProps {
+export interface DeleteActionProps {
   name: string;
   id: string;
   resetSelectedRows: () => void;
 }
 
-const displayName = 'DeleteAccountAction';
+const displayName = 'DeleteAction';
 
-export const DeleteAccountAction = (props: DeleteAccountActionProps) => {
+export const DeleteAction = (props: DeleteActionProps) => {
   const { name, id, resetSelectedRows } = props;
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useDeleteAccountMutation(id, {
+  const mutation = useDeleteAccount(id, {
     onSettled: () => {
       resetSelectedRows?.();
     },
@@ -66,4 +66,4 @@ export const DeleteAccountAction = (props: DeleteAccountActionProps) => {
   );
 };
 
-DeleteAccountAction.displayName = displayName;
+DeleteAction.displayName = displayName;

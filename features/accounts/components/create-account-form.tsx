@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { LoadingButton } from './loading-button';
 import { Button, DrawerClose, Input } from '@typeweave/react';
-import { useCreateAccountDrawerState } from '@/hooks/state/use-create-account-drawer-state';
 import { InfoIcon } from 'lucide-react';
-import { useCreateAccountMutation } from '@/hooks/mutation/use-create-account-mutation';
+import { useCreateAccountDrawer } from '../hooks/use-create-account-drawer';
+import { useCreateAccount } from '../api-hooks/use-create-account';
+import { LoadingButton } from '@/components/loading-button';
 
 const formScehma = z.object({
   name: z.string().min(1, 'Name must contain at least 1 character(s)'),
@@ -23,7 +23,7 @@ const displayName = 'CreateAccountForm';
 export const CreateAccountForm = (props: CreateAccountFormProps) => {
   const {} = props;
 
-  const { onClose } = useCreateAccountDrawerState();
+  const { onClose } = useCreateAccountDrawer();
 
   const {
     register,
@@ -41,7 +41,7 @@ export const CreateAccountForm = (props: CreateAccountFormProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const preventCloseRef = React.useRef(false);
 
-  const mutation = useCreateAccountMutation({
+  const mutation = useCreateAccount({
     onSettled: () => {
       if (preventCloseRef.current) inputRef.current?.focus();
       if (!preventCloseRef.current) onClose?.();

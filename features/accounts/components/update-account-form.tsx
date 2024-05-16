@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { LoadingButton } from './loading-button';
+import { useUpdateAccountDrawer } from '../hooks/use-update-account-drawer';
+import { useGetAccount } from '../api-hooks/use-get-account';
+import { useUpdateAccount } from '../api-hooks/use-update-account';
 import { Button, DrawerClose, Input, Skeleton } from '@typeweave/react';
-import { useUpdateAccountDrawerState } from '@/hooks/state/use-update-account-drawer-state';
-import { useUpdateAccountMutation } from '@/hooks/mutation/use-update-account-mutation';
-import { useGetAccountQuery } from '@/hooks/query/use-get-account-query';
+import { LoadingButton } from '@/components/loading-button';
 
 const formScehma = z.object({
   name: z.string().min(1, 'Name must contain at least 1 character(s)'),
@@ -23,9 +23,9 @@ const displayName = 'UpdateAccountForm';
 export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
   const {} = props;
 
-  const { onClose, id } = useUpdateAccountDrawerState();
+  const { onClose, id } = useUpdateAccountDrawer();
 
-  const query = useGetAccountQuery(id, { enabled: !!id });
+  const query = useGetAccount(id, { enabled: !!id });
 
   const {
     register,
@@ -41,7 +41,7 @@ export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
     setValue('name', query.data?.name || '');
   }, [query.data?.name, setValue]);
 
-  const mutation = useUpdateAccountMutation(id, {
+  const mutation = useUpdateAccount(id, {
     onSettled: () => {
       onClose();
     },

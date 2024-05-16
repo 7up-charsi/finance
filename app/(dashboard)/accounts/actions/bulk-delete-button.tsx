@@ -1,27 +1,25 @@
 'use client';
 
 import React from 'react';
-import { AlertDialog } from './alert-dialog';
 import { AlertDialogRootMethods } from '@typeweave/react';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
-import { useBulkDeleteAccountsMutation } from '@/hooks/mutation/use-bulk-delete-accounts-mutation';
-import { LoadingButton } from './loading-button';
+import { AlertDialog } from '@/components/alert-dialog';
+import { LoadingButton } from '@/components/loading-button';
+import { useBulkDeleteAccounts } from '@/features/accounts/api-hooks/use-bulk-delete-accounts';
 
-export interface BulkDeleteAccountsButtonProps {
+export interface BulkDeleteButtonProps {
   selectedRows: string[];
   resetSelectedRows: () => void;
 }
 
-const displayName = 'BulkDeleteAccountsButton';
+const displayName = 'BulkDeleteButton';
 
-export const BulkDeleteAccountsButton = (
-  props: BulkDeleteAccountsButtonProps,
-) => {
+export const BulkDeleteButton = (props: BulkDeleteButtonProps) => {
   const { selectedRows, resetSelectedRows } = props;
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useBulkDeleteAccountsMutation({
+  const mutation = useBulkDeleteAccounts({
     onSettled: () => {
       resetSelectedRows?.();
     },
@@ -56,4 +54,4 @@ export const BulkDeleteAccountsButton = (
   );
 };
 
-BulkDeleteAccountsButton.displayName = displayName;
+BulkDeleteButton.displayName = displayName;

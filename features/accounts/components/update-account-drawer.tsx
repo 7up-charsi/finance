@@ -1,6 +1,5 @@
 import { XIcon } from 'lucide-react';
 import React from 'react';
-import { useCreateAccountDrawerState } from '@/hooks/state/use-create-account-drawer-state';
 import {
   Button,
   DrawerClose,
@@ -11,23 +10,24 @@ import {
   DrawerRootMethods,
   FocusTrap,
 } from '@typeweave/react';
+import { useUpdateAccountDrawer } from '../hooks/use-update-account-drawer';
 
-export interface CreateAccountDrawerProps {
+export interface UpdateAccountDrawerProps {
   children: React.ReactNode;
 }
 
-const displayName = 'CreateAccountDrawer';
+const displayName = 'UpdateAccountDrawer';
 
-export const CreateAccountDrawer = React.forwardRef<
+export const UpdateAccountDrawer = React.forwardRef<
   DrawerRootMethods,
-  CreateAccountDrawerProps
->((props: CreateAccountDrawerProps, forwardedRef) => {
+  UpdateAccountDrawerProps
+>((props: UpdateAccountDrawerProps, forwardedRef) => {
   const { children } = props;
 
   const titleId = React.useId();
   const descriptionId = React.useId();
 
-  const { open, onOpenChange } = useCreateAccountDrawerState();
+  const { open, onOpenChange } = useUpdateAccountDrawer();
 
   return (
     <DrawerRoot ref={forwardedRef} open={open} onOpenChange={onOpenChange}>
@@ -47,7 +47,7 @@ export const CreateAccountDrawer = React.forwardRef<
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div id={titleId} className="font-semibold capitalize">
-                    create account
+                    update account
                   </div>
 
                   <DrawerClose>
@@ -67,7 +67,7 @@ export const CreateAccountDrawer = React.forwardRef<
                   id={descriptionId}
                   className="text-sm first-letter:uppercase"
                 >
-                  create a new account to track your transactions.
+                  update your existing account
                 </div>
               </div>
 
@@ -80,4 +80,4 @@ export const CreateAccountDrawer = React.forwardRef<
   );
 });
 
-CreateAccountDrawer.displayName = displayName;
+UpdateAccountDrawer.displayName = displayName;

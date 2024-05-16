@@ -5,37 +5,32 @@ import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'react-toastify';
 
 type ResponseType = InferResponseType<
-  (typeof honoClient.api.accounts)[':id']['$delete']
+  (typeof honoClient.api.accounts)['bulk-delete']['$post']
 >;
 
 type RequestType = InferRequestType<
-  (typeof honoClient.api.accounts)[':id']['$delete']
->['param'];
+  (typeof honoClient.api.accounts)['bulk-delete']['$post']
+>['json'];
 
-export const useDeleteAccountMutation = (
-  id: string,
-  options?: MutationOptions,
-) => {
+export const useBulkDeleteAccounts = (options?: MutationOptions) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationKey: ['accounts', 'delete', id],
-    mutationFn: async ({ id }) => {
-      const res = await honoClient.api.accounts[':id']['$delete']({
-        param: { id },
-      });
+    mutationKey: ['accounts', 'bulk-delete'],
+    mutationFn: async (json) => {
+      const res = await honoClient.api.accounts['bulk-delete'].$post({ json });
 
       return await res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      toast.success('Account deleted');
+      toast.success('Accounts deleted');
       onSuccess?.();
     },
     onError: () => {
-      toast.error('Failed to delete account');
+      toast.error('Failed to delete accounts');
       onError?.();
     },
     onSettled,

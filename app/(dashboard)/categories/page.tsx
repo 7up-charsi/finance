@@ -19,19 +19,19 @@ import {
 import { BulkDeleteButton } from './actions/bulk-delete-button';
 import { DeleteAction } from './actions/delete-action';
 import { Loader } from '@/components/loader';
-import { AccountsFetchingIndicator } from '@/components/accounts-fetching-indicator';
+import { CategoriesFetchingIndicator } from '@/components/categories-fetching-indicator';
 import { UpdateAction } from './actions/update-action';
-import { useCreateAccountDrawer } from '@/features/accounts/hooks/use-create-account-drawer';
-import { useGetAccounts } from '@/features/accounts/api-hooks/use-get-accounts';
+import { useCreateCategoryDrawer } from '@/features/categories/hooks/use-create-category-drawer';
+import { useGetCategories } from '@/features/categories/api-hooks/use-get-categories';
 
-const AccountsPage = () => {
-  const openCreateAccountDrawer = useCreateAccountDrawer(
+const CategoriesPage = () => {
+  const openCreateCategoryDrawer = useCreateCategoryDrawer(
     (state) => state.onOpen,
   );
 
   const selectRowRef = React.useRef<TableSelectRowRootMethods>(null);
 
-  const accountsQuery = useGetAccounts();
+  const accountsQuery = useGetCategories();
 
   if (accountsQuery.isLoading) {
     return (
@@ -57,13 +57,13 @@ const AccountsPage = () => {
         <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
           <div className="flex flex-row items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold capitalize leading-none">
-              Accounts
+              Categories
             </h1>
 
-            <AccountsFetchingIndicator />
+            <CategoriesFetchingIndicator />
 
-            <Button variant="solid" onPress={() => openCreateAccountDrawer()}>
-              create account
+            <Button variant="solid" onPress={() => openCreateCategoryDrawer()}>
+              create category
             </Button>
           </div>
 
@@ -73,7 +73,7 @@ const AccountsPage = () => {
               className="h-full grow"
               label="filter"
               hideLabel
-              placeholder="Filer accounts"
+              placeholder="Filer categories"
               endContent={
                 <Button
                   isIconOnly
@@ -184,4 +184,4 @@ const AccountsPage = () => {
   );
 };
 
-export default AccountsPage;
+export default CategoriesPage;

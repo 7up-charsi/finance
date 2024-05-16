@@ -8,8 +8,9 @@ import { mauve, mauveDark } from '@radix-ui/colors';
 
 const config: Config = {
   content: [
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './features/**/*.{ts,tsx}',
     registerAllStyles(),
   ],
   theme: {

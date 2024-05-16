@@ -2,19 +2,17 @@ import { honoClient } from '@/lib/hono';
 import { QueryOptions } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetAccountQuery = (id?: string, options?: QueryOptions) => {
+export const useGetCategories = (options?: QueryOptions) => {
   const { enabled } = options || {};
 
   const query = useQuery({
     enabled,
-    queryKey: ['accounts', id],
+    queryKey: ['categories'],
     queryFn: async () => {
-      const res = await honoClient.api.accounts[':id']['$get']({
-        param: { id },
-      });
+      const res = await honoClient.api.categories.$get();
 
       if (!res.ok) {
-        throw new Error('failed to fetch account');
+        throw new Error('failed to fetch categories');
       }
 
       const { data } = await res.json();
