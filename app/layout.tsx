@@ -1,3 +1,4 @@
+import { Drawers } from '@/components/drawers';
 import { QueryProvider } from '@/providers/react-query';
 import '@/styles/globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -18,7 +19,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="bg-background text-foreground">
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            {children}
+
+            <Drawers />
+          </QueryProvider>
 
           <ToastContainer
             position="bottom-right"

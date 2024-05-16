@@ -93,8 +93,9 @@ export const Header = (props: HeaderProps) => {
                   aria-label="primary navigation links"
                   className="flex flex-col gap-2"
                 >
-                  {navLinks.map(({ label, href }) => (
+                  {navLinks.map(({ label, href }, i) => (
                     <Button
+                      key={i}
                       variant={pathname === href ? 'flat' : 'text'}
                       color={pathname === href ? 'primary' : 'default'}
                       onPress={() => {
@@ -119,8 +120,9 @@ export const Header = (props: HeaderProps) => {
           className="ml-10 hidden gap-2 lg:flex"
           aria-label="primary navigation links"
         >
-          {navLinks.map(({ label, href }) => (
+          {navLinks.map(({ label, href }, i) => (
             <Link
+              key={i}
               href={href}
               className={cn(
                 'flex h-8 items-center rounded px-3 text-white outline-none hover:bg-white/30 focus-visible:ring-2 focus-visible:ring-focus active:bg-white/40',

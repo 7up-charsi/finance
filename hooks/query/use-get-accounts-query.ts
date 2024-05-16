@@ -1,8 +1,12 @@
 import { honoClient } from '@/lib/hono';
+import { QueryOptions } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetAccounts = () => {
+export const useGetAccountsQuery = (options?: QueryOptions) => {
+  const { enabled } = options || {};
+
   const query = useQuery({
+    enabled,
     queryKey: ['accounts'],
     queryFn: async () => {
       const res = await honoClient.api.accounts.$get();
