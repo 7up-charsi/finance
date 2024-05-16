@@ -3,24 +3,25 @@
 import React from 'react';
 import { AlertDialog } from './alert-dialog';
 import { AlertDialogRootMethods, Button } from '@typeweave/react';
-import { Loader2Icon, TrashIcon } from 'lucide-react';
+import { TrashIcon } from 'lucide-react';
 import { useDeleteAccountMutation } from '@/hooks/mutation/use-delete-account-mutation';
-import { useIsFetching } from '@tanstack/react-query';
+import { useIsFetching, useIsMutating } from '@tanstack/react-query';
+import { Loader } from './loader';
 
-export interface DeleteAccountButtonProps {
+export interface DeleteAccountActionProps {
   name: string;
   id: string;
   resetSelectedRows: () => void;
 }
 
-const displayName = 'DeleteAccountButton';
+const displayName = 'DeleteAccountAction';
 
-export const DeleteAccountButton = (props: DeleteAccountButtonProps) => {
+export const DeleteAccountAction = (props: DeleteAccountActionProps) => {
   const { name, id, resetSelectedRows } = props;
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useDeleteAccountMutation({
+  const mutation = useDeleteAccountMutation(id, {
     onSettled: () => {
       resetSelectedRows?.();
     },
@@ -28,8 +29,15 @@ export const DeleteAccountButton = (props: DeleteAccountButtonProps) => {
 
   const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
 
-  const isBulkDeleting = useIsFetching({
-    queryKey: ['accounts', 'bulk-delete'],
+  const deletingSelf = mutation.isPending;
+
+  const bulkDeleting = useIsMutating({
+    mutationKey: ['accounts', 'bulk-delete'],
+    exact: true,
+  });
+
+  const mutatingSelf = useIsMutating({
+    mutationKey: ['accounts', 'update', id],
     exact: true,
   });
 
@@ -47,17 +55,15 @@ export const DeleteAccountButton = (props: DeleteAccountButtonProps) => {
           aria-label={`delete account named ${name}`}
           size="sm"
           color="danger"
-          disabled={mutation.isPending || !!isFetching || !!isBulkDeleting}
+          disabled={
+            deletingSelf || !!isFetching || !!bulkDeleting || !!mutatingSelf
+          }
         >
-          {mutation.isPending ? (
-            <Loader2Icon className="animate-spin" />
-          ) : (
-            <TrashIcon />
-          )}
+          {mutation.isPending ? <Loader /> : <TrashIcon />}
         </Button>
       }
     />
   );
 };
 
-DeleteAccountButton.displayName = displayName;
+DeleteAccountAction.displayName = displayName;

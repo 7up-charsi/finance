@@ -1,6 +1,6 @@
 import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs';
-import { Loader2Icon } from 'lucide-react';
 import React from 'react';
+import { Loader } from './loader';
 
 const displayName = 'ClerkUserButton';
 
@@ -11,7 +11,7 @@ export const ClerkUserButton = () => {
         <UserButton />
       </ClerkLoaded>
       <ClerkLoading>
-        <Loader2Icon className="size-7 animate-spin text-white" />
+        <Loader size={28} className="text-white" />
       </ClerkLoading>
     </div>
   );

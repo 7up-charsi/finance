@@ -1,6 +1,6 @@
 import { XIcon } from 'lucide-react';
 import React from 'react';
-import { useAddAccountDrawerState } from '@/hooks/state/use-add-account-drawer-state';
+import { useCreateAccountDrawerState } from '@/hooks/state/use-create-account-drawer-state';
 import {
   Button,
   DrawerClose,
@@ -12,22 +12,22 @@ import {
   FocusTrap,
 } from '@typeweave/react';
 
-export interface AddAccountDrawerProps {
+export interface CreateAccountDrawerProps {
   children: React.ReactNode;
 }
 
-const displayName = 'AddAccountDrawer';
+const displayName = 'CreateAccountDrawer';
 
-export const AddAccountDrawer = React.forwardRef<
+export const CreateAccountDrawer = React.forwardRef<
   DrawerRootMethods,
-  AddAccountDrawerProps
->((props: AddAccountDrawerProps, forwardedRef) => {
+  CreateAccountDrawerProps
+>((props: CreateAccountDrawerProps, forwardedRef) => {
   const { children } = props;
 
   const titleId = React.useId();
   const descriptionId = React.useId();
 
-  const { open, onOpenChange } = useAddAccountDrawerState();
+  const { open, onOpenChange } = useCreateAccountDrawerState();
 
   return (
     <DrawerRoot ref={forwardedRef} open={open} onOpenChange={onOpenChange}>
@@ -47,7 +47,7 @@ export const AddAccountDrawer = React.forwardRef<
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div id={titleId} className="font-semibold capitalize">
-                    add account
+                    create account
                   </div>
 
                   <DrawerClose>
@@ -80,4 +80,4 @@ export const AddAccountDrawer = React.forwardRef<
   );
 });
 
-AddAccountDrawer.displayName = displayName;
+CreateAccountDrawer.displayName = displayName;

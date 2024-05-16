@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Loader2, PencilIcon, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import {
   Button,
   Checkbox,
@@ -16,26 +16,22 @@ import {
   TableSelectRowRootMethods,
   TableSelectedRows,
 } from '@typeweave/react';
-import { useUpdateAccountDrawerState } from '@/hooks/state/use-update-account-drawer-state';
-import { useAddAccountDrawerState } from '@/hooks/state/use-add-account-drawer-state';
+import { useCreateAccountDrawerState } from '@/hooks/state/use-create-account-drawer-state';
 import { useGetAccountsQuery } from '@/hooks/query/use-get-accounts-query';
 import { BulkDeleteAccountsButton } from '@/components/bulk-delete-accounts-button';
-import { DeleteAccountButton } from '@/components/delete-account-button';
+import { DeleteAccountAction } from '@/components/delete-account-action';
+import { Loader } from '@/components/loader';
+import { AccountsFetchingIndicator } from '@/components/accounts-fetching-indicator';
+import { UpdateAccountAction } from '@/components/update-account-action';
 
 const AccountsPage = () => {
-  const openUpdateAccountDrawer = useUpdateAccountDrawerState(
-    (state) => state.onOpen,
-  );
-
-  const openAddAccountDrawer = useAddAccountDrawerState(
+  const openCreateAccountDrawer = useCreateAccountDrawerState(
     (state) => state.onOpen,
   );
 
   const selectRowRef = React.useRef<TableSelectRowRootMethods>(null);
 
   const accountsQuery = useGetAccountsQuery();
-
-  console.log('re-render');
 
   if (accountsQuery.isLoading) {
     return (
@@ -49,7 +45,7 @@ const AccountsPage = () => {
         </div>
 
         <div className="mt-4 flex h-72 items-center justify-center overflow-x-auto">
-          <Loader2 className="size-8 animate-spin text-muted-11" />
+          <Loader size={32} />
         </div>
       </div>
     );
@@ -64,13 +60,15 @@ const AccountsPage = () => {
               Accounts
             </h1>
 
-            <Button variant="solid" onPress={() => openAddAccountDrawer()}>
-              add account
+            <AccountsFetchingIndicator />
+
+            <Button variant="solid" onPress={() => openCreateAccountDrawer()}>
+              create account
             </Button>
           </div>
 
           <div className="mt-4 flex h-10 items-center gap-2">
-            {/* TODO: make filter works by adding api end point */}
+            {/* TODO: make filter works by creating api end point */}
             <Input
               className="h-full grow"
               label="filter"
@@ -142,16 +140,9 @@ const AccountsPage = () => {
                   cell: (val, row) => {
                     return (
                       <div className="flex items-center justify-center gap-2">
-                        <Button
-                          isIconOnly
-                          aria-label={`update account named ${row.name}`}
-                          size="sm"
-                          onPress={() => openUpdateAccountDrawer(val)}
-                        >
-                          <PencilIcon />
-                        </Button>
+                        <UpdateAccountAction name={row.name} id={val} />
 
-                        <DeleteAccountButton
+                        <DeleteAccountAction
                           id={val}
                           name={row.name}
                           resetSelectedRows={() =>
@@ -184,7 +175,7 @@ const AccountsPage = () => {
               )}
             </TableSelectedRows>
 
-            {/* TODO: make Pagination works by adding api end point */}
+            {/* TODO: make Pagination works by creating api end point */}
             <Pagination size="sm" color="default" className="self-end" />
           </div>
         </div>

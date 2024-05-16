@@ -4,26 +4,17 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { toast } from 'react-toastify';
-import { honoClient } from '@/lib/hono';
-import { InferRequestType, InferResponseType } from 'hono';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from './loading-button';
 import { Button, DrawerClose, Input, Skeleton } from '@typeweave/react';
 import { useUpdateAccountDrawerState } from '@/hooks/state/use-update-account-drawer-state';
+import { useUpdateAccountMutation } from '@/hooks/mutation/use-update-account-mutation';
+import { useGetAccountQuery } from '@/hooks/query/use-get-account-query';
 
 const formScehma = z.object({
   name: z.string().min(1, 'Name must contain at least 1 character(s)'),
 });
 
 type FormValues = z.input<typeof formScehma>;
-
-type ResponseType = InferResponseType<
-  (typeof honoClient.api.accounts)[':id']['$patch']
->;
-type RequestType = InferRequestType<
-  (typeof honoClient.api.accounts)[':id']['$patch']
->['json'];
 
 interface UpdateAccountFormProps {}
 
@@ -34,23 +25,7 @@ export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
 
   const { onClose, id } = useUpdateAccountDrawerState();
 
-  const query = useQuery({
-    enabled: !!id,
-    queryKey: ['accounts', id],
-    queryFn: async () => {
-      const res = await honoClient.api.accounts[':id']['$get']({
-        param: { id },
-      });
-
-      if (!res.ok) {
-        throw new Error('failed to fetch account');
-      }
-
-      const { data } = await res.json();
-
-      return data;
-    },
-  });
+  const query = useGetAccountQuery(id, { enabled: !!id });
 
   const {
     register,
@@ -66,24 +41,7 @@ export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
     setValue('name', query.data?.name || '');
   }, [query.data?.name, setValue]);
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (json) => {
-      const res = await honoClient.api.accounts[':id']['$patch']({
-        param: { id },
-        json,
-      });
-      return await res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      queryClient.invalidateQueries({ queryKey: ['accounts', id] });
-      toast.success('Account updated');
-    },
-    onError: () => {
-      toast.error('Failed to update account');
-    },
+  const mutation = useUpdateAccountMutation(id, {
     onSettled: () => {
       onClose();
     },

@@ -3,7 +3,7 @@
 import React from 'react';
 import { AlertDialog } from './alert-dialog';
 import { AlertDialogRootMethods } from '@typeweave/react';
-import { useIsFetching } from '@tanstack/react-query';
+import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { useBulkDeleteAccountsMutation } from '@/hooks/mutation/use-bulk-delete-accounts-mutation';
 import { LoadingButton } from './loading-button';
 
@@ -27,7 +27,11 @@ export const BulkDeleteAccountsButton = (
     },
   });
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'] });
+  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+
+  const isDeleting = useIsMutating({
+    mutationKey: ['accounts', 'delete'],
+  });
 
   return (
     <AlertDialog
@@ -42,7 +46,7 @@ export const BulkDeleteAccountsButton = (
           aria-label={`bulk delete ${selectedRows.length} accounts`}
           color="danger"
           className="h-full"
-          disabled={mutation.isPending || !!isFetching}
+          disabled={mutation.isPending || !!isFetching || !!isDeleting}
           loading={mutation.isPending}
         >
           delete ({selectedRows.length})

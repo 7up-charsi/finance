@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@typeweave/react';
-import { Loader2 } from 'lucide-react';
 import React from 'react';
+import { Loader } from './loader';
 
 export interface LoadingButtonProps extends ButtonProps {
   loading?: boolean;
@@ -21,7 +21,7 @@ export const LoadingButton = React.forwardRef<
       startContent={
         loading ? (
           <>
-            <Loader2 className="animate-spin" />
+            <Loader />
             {startContent}
           </>
         ) : (

@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { UpdateAccountDrawer } from './update-account-drawer';
-import { AddAccountDrawer } from './add-account-drawer';
+import { CreateAccountDrawer } from './create-account-drawer';
 import { UpdateAccountForm } from './update-account-form';
-import { AddAccountForm } from './add-account-form';
+import { CreateAccountForm } from './create-account-form';
 
 const displayName = 'Drawers';
 
@@ -15,9 +15,9 @@ export const Drawers = () => {
         <UpdateAccountForm />
       </UpdateAccountDrawer>
 
-      <AddAccountDrawer>
-        <AddAccountForm />
-      </AddAccountDrawer>
+      <CreateAccountDrawer>
+        <CreateAccountForm />
+      </CreateAccountDrawer>
     </>
   );
 };

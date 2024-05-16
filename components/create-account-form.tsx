@@ -4,14 +4,11 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { toast } from 'react-toastify';
-import { honoClient } from '@/lib/hono';
-import { InferRequestType, InferResponseType } from 'hono';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from './loading-button';
 import { Button, DrawerClose, Input } from '@typeweave/react';
-import { useAddAccountDrawerState } from '@/hooks/state/use-add-account-drawer-state';
+import { useCreateAccountDrawerState } from '@/hooks/state/use-create-account-drawer-state';
 import { InfoIcon } from 'lucide-react';
+import { useCreateAccountMutation } from '@/hooks/mutation/use-create-account-mutation';
 
 const formScehma = z.object({
   name: z.string().min(1, 'Name must contain at least 1 character(s)'),
@@ -19,19 +16,14 @@ const formScehma = z.object({
 
 type FormValues = z.input<typeof formScehma>;
 
-type ResponseType = InferResponseType<typeof honoClient.api.accounts.$post>;
-type RequestType = InferRequestType<
-  typeof honoClient.api.accounts.$post
->['json'];
+interface CreateAccountFormProps {}
 
-interface AddAccountFormProps {}
+const displayName = 'CreateAccountForm';
 
-const displayName = 'AddAccountForm';
-
-export const AddAccountForm = (props: AddAccountFormProps) => {
+export const CreateAccountForm = (props: CreateAccountFormProps) => {
   const {} = props;
 
-  const { onClose } = useAddAccountDrawerState();
+  const { onClose } = useCreateAccountDrawerState();
 
   const {
     register,
@@ -49,20 +41,7 @@ export const AddAccountForm = (props: AddAccountFormProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const preventCloseRef = React.useRef(false);
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async (json) => {
-      const res = await honoClient.api.accounts.$post({ json });
-      return await res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      toast.success('Account created');
-    },
-    onError: () => {
-      toast.error('Failed to create account');
-    },
+  const mutation = useCreateAccountMutation({
     onSettled: () => {
       if (preventCloseRef.current) inputRef.current?.focus();
       if (!preventCloseRef.current) onClose?.();
@@ -119,7 +98,7 @@ export const AddAccountForm = (props: AddAccountFormProps) => {
               formRef.current?.requestSubmit();
             }}
           >
-            Add
+            create
           </LoadingButton>
 
           <LoadingButton
@@ -127,22 +106,27 @@ export const AddAccountForm = (props: AddAccountFormProps) => {
             color="success"
             disabled={mutation.isPending}
             loading={mutation.isPending}
+            className="lg:hidden"
           >
-            Add & Close
+            create & Close
           </LoadingButton>
         </div>
 
         <div
           aria-describedby={infoId}
-          className="flex items-center gap-3 text-sm text-info-11"
+          className="hidden items-center gap-3 text-sm lg:flex"
         >
-          <InfoIcon size={20} />
+          <div className="self-start pt-1 text-info-11">
+            <InfoIcon className="size-5" />
+          </div>
 
           <span id={infoId}>
-            <code className="mr-2 rounded bg-info-3 px-1 py-1">
-              ctrl + Enter
+            Press
+            <code className="mx-1 rounded bg-muted-3 px-1 py-1">
+              Ctrl + Enter
             </code>
-            <span className="text-foreground">to add and not close</span>
+            to create a new account without closing the drawer. This will allow
+            you to create multiple accounts quickly!
           </span>
         </div>
       </form>
@@ -150,4 +134,4 @@ export const AddAccountForm = (props: AddAccountFormProps) => {
   );
 };
 
-AddAccountForm.displayName = displayName;
+CreateAccountForm.displayName = displayName;
