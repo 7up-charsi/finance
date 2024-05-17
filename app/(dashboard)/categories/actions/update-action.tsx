@@ -1,4 +1,4 @@
-import { useUpdateAccountDrawer } from '@/features/accounts/hooks/use-update-account-drawer';
+import { useUpdateCategoryDrawer } from '@/features/categories/hooks/use-update-category-drawer';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { Button } from '@typeweave/react';
 import { PencilIcon } from 'lucide-react';
@@ -14,29 +14,29 @@ const displayName = 'UpdateAction';
 export const UpdateAction = (props: UpdateActionProps) => {
   const { id, name } = props;
 
-  const open = useUpdateAccountDrawer((state) => state.onOpen);
+  const open = useUpdateCategoryDrawer((state) => state.onOpen);
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+  const isFetching = useIsFetching({ queryKey: ['categories'], exact: true });
 
   const mutatingSelf = useIsMutating({
-    mutationKey: ['accounts', 'update', id],
+    mutationKey: ['categories', 'update', id],
     exact: true,
   });
 
   const deletingSelf = useIsMutating({
-    mutationKey: ['accounts', 'delete', id],
+    mutationKey: ['categories', 'delete', id],
     exact: true,
   });
 
   const bulkDeleting = useIsMutating({
-    mutationKey: ['accounts', 'bulk-delete'],
+    mutationKey: ['categories', 'bulk-delete'],
     exact: true,
   });
 
   return (
     <Button
       isIconOnly
-      aria-label={`update account named ${name}`}
+      aria-label={`update category named ${name}`}
       size="sm"
       onPress={() => open(id)}
       disabled={

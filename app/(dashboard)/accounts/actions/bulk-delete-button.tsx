@@ -20,9 +20,7 @@ export const BulkDeleteButton = (props: BulkDeleteButtonProps) => {
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
   const mutation = useBulkDeleteAccounts({
-    onSettled: () => {
-      resetSelectedRows?.();
-    },
+    onSettled: resetSelectedRows,
   });
 
   const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });

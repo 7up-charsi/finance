@@ -6,45 +6,40 @@ import { TrashIcon } from 'lucide-react';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { AlertDialog } from '@/components/alert-dialog';
 import { Loader } from '@/components/loader';
-import { useDeleteAccount } from '@/features/accounts/api-hooks/use-delete-account';
+import { useDeleteCategory } from '@/features/categories/api-hooks/use-delete-category';
 
 export interface DeleteActionProps {
   name: string;
   id: string;
-  resetSelectedRows: () => void;
 }
 
 const displayName = 'DeleteAction';
 
 export const DeleteAction = (props: DeleteActionProps) => {
-  const { name, id, resetSelectedRows } = props;
+  const { name, id } = props;
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useDeleteAccount(id, {
-    onSettled: () => {
-      resetSelectedRows?.();
-    },
-  });
+  const mutation = useDeleteCategory(id);
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+  const isFetching = useIsFetching({ queryKey: ['categories'], exact: true });
 
   const deletingSelf = mutation.isPending;
 
   const bulkDeleting = useIsMutating({
-    mutationKey: ['accounts', 'bulk-delete'],
+    mutationKey: ['categories', 'bulk-delete'],
     exact: true,
   });
 
   const mutatingSelf = useIsMutating({
-    mutationKey: ['accounts', 'update', id],
+    mutationKey: ['categories', 'update', id],
     exact: true,
   });
 
   return (
     <AlertDialog
       ref={alertDialogRef}
-      title="account"
+      title="category"
       onSuccess={() => {
         mutation.mutate({ id });
         alertDialogRef.current?.close();
@@ -52,7 +47,7 @@ export const DeleteAction = (props: DeleteActionProps) => {
       trigger={
         <Button
           isIconOnly
-          aria-label={`delete account named ${name}`}
+          aria-label={`delete category named ${name}`}
           size="sm"
           color="danger"
           disabled={

@@ -89,10 +89,21 @@ export const CreateCategoryForm = (props: CreateCategoryFormProps) => {
           </DrawerClose>
 
           <LoadingButton
-            type="button"
+            type="submit"
             color="success"
             disabled={mutation.isPending}
             loading={mutation.isPending}
+            className="max-lg:hidden"
+          >
+            create
+          </LoadingButton>
+
+          <LoadingButton
+            type="submit"
+            color="success"
+            disabled={mutation.isPending}
+            loading={mutation.isPending}
+            className="lg:hidden"
             onPress={() => {
               preventCloseRef.current = true;
               formRef.current?.requestSubmit();

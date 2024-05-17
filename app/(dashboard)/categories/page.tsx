@@ -29,11 +29,11 @@ const CategoriesPage = () => {
     (state) => state.onOpen,
   );
 
-  const selectRowRef = React.useRef<TableSelectRowRootMethods>(null);
+  const selectRowsRef = React.useRef<TableSelectRowRootMethods>(null);
 
-  const accountsQuery = useGetCategories();
+  const categories = useGetCategories();
 
-  if (accountsQuery.isLoading) {
+  if (categories.isLoading) {
     return (
       <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
         <div className="flex flex-row items-center justify-between gap-4">
@@ -53,7 +53,7 @@ const CategoriesPage = () => {
 
   return (
     <>
-      <TableSelectRowRoot ref={selectRowRef}>
+      <TableSelectRowRoot ref={selectRowsRef}>
         <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
           <div className="flex flex-row items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold capitalize leading-none">
@@ -92,7 +92,9 @@ const CategoriesPage = () => {
                 !selectedRows.length ? null : (
                   <BulkDeleteButton
                     selectedRows={selectedRows}
-                    resetSelectedRows={() => selectRowRef.current?.reset()}
+                    resetSelectedRows={() => {
+                      selectRowsRef.current?.reset();
+                    }}
                   />
                 )
               }
@@ -101,7 +103,7 @@ const CategoriesPage = () => {
 
           <div className="mt-4 overflow-x-auto border-b">
             <TableRoot
-              data={accountsQuery.data ?? []}
+              data={categories.data ?? []}
               getRowKey={(row) => row.id}
               columns={[
                 {
@@ -142,13 +144,7 @@ const CategoriesPage = () => {
                       <div className="flex items-center justify-center gap-2">
                         <UpdateAction name={row.name} id={val} />
 
-                        <DeleteAction
-                          id={val}
-                          name={row.name}
-                          resetSelectedRows={() =>
-                            selectRowRef.current?.reset()
-                          }
-                        />
+                        <DeleteAction id={val} name={row.name} />
                       </div>
                     );
                   },
@@ -158,7 +154,7 @@ const CategoriesPage = () => {
               <Table variant="strip" className="min-w-full whitespace-nowrap" />
             </TableRoot>
 
-            {accountsQuery.data?.length ? null : (
+            {categories.data?.length ? null : (
               <div className="flex h-14 items-center justify-center">
                 <span>No results found</span>
               </div>
@@ -167,10 +163,9 @@ const CategoriesPage = () => {
 
           <div className="mt-4 flex flex-col justify-between gap-4 lg:flex-row">
             <TableSelectedRows>
-              {({ selectedRows }) => (
+              {({ selectedCount }) => (
                 <span>
-                  {selectedRows.length} of {accountsQuery.data?.length} row(s)
-                  selected
+                  {selectedCount} of {categories.data?.length} row(s) selected
                 </span>
               )}
             </TableSelectedRows>

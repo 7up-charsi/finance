@@ -12,7 +12,7 @@ type RequestType = InferRequestType<
   (typeof honoClient.api.categories)[':id']['$delete']
 >['param'];
 
-export const useDeleteCategories = (id: string, options?: MutationOptions) => {
+export const useDeleteCategory = (id: string, options?: MutationOptions) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();
@@ -28,7 +28,7 @@ export const useDeleteCategories = (id: string, options?: MutationOptions) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      toast.success('Categories deleted');
+      toast.success('Category deleted');
       onSuccess?.();
     },
     onError: () => {

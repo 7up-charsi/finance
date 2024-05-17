@@ -88,7 +88,7 @@ export const UpdateCategoryForm = (props: UpdateCategoryFormProps) => {
               disabled={mutation.isPending}
               loading={mutation.isPending}
             >
-              update category
+              update
             </LoadingButton>
           </div>
         </form>

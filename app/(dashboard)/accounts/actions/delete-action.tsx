@@ -11,21 +11,16 @@ import { useDeleteAccount } from '@/features/accounts/api-hooks/use-delete-accou
 export interface DeleteActionProps {
   name: string;
   id: string;
-  resetSelectedRows: () => void;
 }
 
 const displayName = 'DeleteAction';
 
 export const DeleteAction = (props: DeleteActionProps) => {
-  const { name, id, resetSelectedRows } = props;
+  const { name, id } = props;
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useDeleteAccount(id, {
-    onSettled: () => {
-      resetSelectedRows?.();
-    },
-  });
+  const mutation = useDeleteAccount(id);
 
   const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
 

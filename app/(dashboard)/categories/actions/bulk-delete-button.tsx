@@ -5,7 +5,7 @@ import { AlertDialogRootMethods } from '@typeweave/react';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { AlertDialog } from '@/components/alert-dialog';
 import { LoadingButton } from '@/components/loading-button';
-import { useBulkDeleteAccounts } from '@/features/accounts/api-hooks/use-bulk-delete-accounts';
+import { useBulkDeleteCategories } from '@/features/categories/api-hooks/use-bulk-delete-categories';
 
 export interface BulkDeleteButtonProps {
   selectedRows: string[];
@@ -19,29 +19,25 @@ export const BulkDeleteButton = (props: BulkDeleteButtonProps) => {
 
   const alertDialogRef = React.useRef<AlertDialogRootMethods>(null);
 
-  const mutation = useBulkDeleteAccounts({
-    onSettled: () => {
-      resetSelectedRows?.();
-    },
-  });
+  const mutation = useBulkDeleteCategories({ onSettled: resetSelectedRows });
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+  const isFetching = useIsFetching({ queryKey: ['categories'], exact: true });
 
   const isDeleting = useIsMutating({
-    mutationKey: ['accounts', 'delete'],
+    mutationKey: ['categories', 'delete'],
   });
 
   return (
     <AlertDialog
       ref={alertDialogRef}
-      title="accounts"
+      title="categories"
       onSuccess={() => {
         mutation.mutate({ ids: selectedRows });
         alertDialogRef.current?.close();
       }}
       trigger={
         <LoadingButton
-          aria-label={`bulk delete ${selectedRows.length} accounts`}
+          aria-label={`bulk delete ${selectedRows.length} categories`}
           color="danger"
           className="h-full"
           disabled={mutation.isPending || !!isFetching || !!isDeleting}

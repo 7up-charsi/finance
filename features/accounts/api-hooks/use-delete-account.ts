@@ -28,7 +28,7 @@ export const useDeleteAccount = (id: string, options?: MutationOptions) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      toast.success('Account deleted');
+      toast.success('Category deleted');
       onSuccess?.();
     },
     onError: () => {

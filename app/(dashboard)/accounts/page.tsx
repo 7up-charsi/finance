@@ -29,7 +29,7 @@ const AccountsPage = () => {
     (state) => state.onOpen,
   );
 
-  const selectRowRef = React.useRef<TableSelectRowRootMethods>(null);
+  const selectRowsRef = React.useRef<TableSelectRowRootMethods>(null);
 
   const accountsQuery = useGetAccounts();
 
@@ -53,7 +53,7 @@ const AccountsPage = () => {
 
   return (
     <>
-      <TableSelectRowRoot ref={selectRowRef}>
+      <TableSelectRowRoot ref={selectRowsRef}>
         <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
           <div className="flex flex-row items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold capitalize leading-none">
@@ -92,7 +92,9 @@ const AccountsPage = () => {
                 !selectedRows.length ? null : (
                   <BulkDeleteButton
                     selectedRows={selectedRows}
-                    resetSelectedRows={() => selectRowRef.current?.reset()}
+                    resetSelectedRows={() => {
+                      selectRowsRef.current?.reset();
+                    }}
                   />
                 )
               }
@@ -142,13 +144,7 @@ const AccountsPage = () => {
                       <div className="flex items-center justify-center gap-2">
                         <UpdateAction name={row.name} id={val} />
 
-                        <DeleteAction
-                          id={val}
-                          name={row.name}
-                          resetSelectedRows={() =>
-                            selectRowRef.current?.reset()
-                          }
-                        />
+                        <DeleteAction id={val} name={row.name} />
                       </div>
                     );
                   },
@@ -167,9 +163,9 @@ const AccountsPage = () => {
 
           <div className="mt-4 flex flex-col justify-between gap-4 lg:flex-row">
             <TableSelectedRows>
-              {({ selectedRows }) => (
+              {({ selectedCount }) => (
                 <span>
-                  {selectedRows.length} of {accountsQuery.data?.length} row(s)
+                  {selectedCount} of {accountsQuery.data?.length} row(s)
                   selected
                 </span>
               )}
