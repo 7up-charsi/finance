@@ -7,7 +7,7 @@ type State = {
   onClose: () => void;
 };
 
-export const useCreateAccountDrawer = create<State>((set) => ({
+export const useCreateTransactionState = create<State>((set) => ({
   open: false,
   onOpen: () => set({ open: true }),
   onOpenChange: (open) => set({ open }),

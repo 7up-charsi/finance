@@ -1,4 +1,4 @@
-import { useUpdateCategoryState } from '@/features/categories/hooks/use-update-category-state';
+import { useUpdateTransactionState } from '@/features/transactions/hooks/use-update-transaction-state';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { Button } from '@typeweave/react';
 import { PencilIcon } from 'lucide-react';
@@ -14,32 +14,32 @@ const displayName = 'UpdateAction';
 export const UpdateAction = (props: UpdateActionProps) => {
   const { id, name } = props;
 
-  const open = useUpdateCategoryState((state) => state.onOpen);
+  const open = useUpdateTransactionState((state) => state.onOpen);
 
   const isFetching = useIsFetching({
-    queryKey: ['categories'],
+    queryKey: ['transactions'],
     exact: true,
   });
 
   const mutatingSelf = useIsMutating({
-    mutationKey: ['categories', 'update', id],
+    mutationKey: ['transactions', 'update', id],
     exact: true,
   });
 
   const deletingSelf = useIsMutating({
-    mutationKey: ['categories', 'delete', id],
+    mutationKey: ['transactions', 'delete', id],
     exact: true,
   });
 
   const bulkDeleting = useIsMutating({
-    mutationKey: ['categories', 'bulk-delete'],
+    mutationKey: ['transactions', 'bulk-delete'],
     exact: true,
   });
 
   return (
     <Button
       isIconOnly
-      aria-label={`update category named ${name}`}
+      aria-label={`update transaction named ${name}`}
       size="sm"
       onPress={() => open(id)}
       disabled={

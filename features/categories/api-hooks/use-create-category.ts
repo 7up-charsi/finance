@@ -4,7 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'react-toastify';
 
-type ResponseType = InferResponseType<typeof honoClient.api.categories.$post>;
+type ResponseType = InferResponseType<
+  typeof honoClient.api.categories.$post
+>;
 type RequestType = InferRequestType<
   typeof honoClient.api.categories.$post
 >['json'];

@@ -1,5 +1,3 @@
-import { XIcon } from 'lucide-react';
-import React from 'react';
 import {
   Button,
   DrawerClose,
@@ -7,33 +5,35 @@ import {
   DrawerOverlay,
   DrawerPortal,
   DrawerRoot,
-  DrawerRootMethods,
   FocusTrap,
 } from '@typeweave/react';
-import { useUpdateCategoryDrawer } from '../hooks/use-update-category-drawer';
+import { XIcon } from 'lucide-react';
+import React from 'react';
 
-export interface UpdateCategoryDrawerProps {
+interface FormDrawerProps {
+  title: string;
+  description: string;
   children: React.ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-const displayName = 'UpdateCategoryDrawer';
+const displayName = 'FormDrawer';
 
-export const UpdateCategoryDrawer = React.forwardRef<
-  DrawerRootMethods,
-  UpdateCategoryDrawerProps
->((props: UpdateCategoryDrawerProps, forwardedRef) => {
-  const { children } = props;
+export const FormDrawer = (props: FormDrawerProps) => {
+  const { title, description, children, open, onOpenChange } = props;
 
   const titleId = React.useId();
   const descriptionId = React.useId();
 
-  const { open, onOpenChange } = useUpdateCategoryDrawer();
-
   return (
-    <DrawerRoot ref={forwardedRef} open={open} onOpenChange={onOpenChange}>
+    <DrawerRoot open={open} onOpenChange={onOpenChange}>
       <DrawerPortal>
         <DrawerOverlay />
-        <DrawerContent placement="right" className="w-full lg:max-w-sm">
+        <DrawerContent
+          placement="right"
+          className="w-full lg:max-w-sm"
+        >
           <div
             role="dialog"
             aria-labelledby={titleId}
@@ -46,8 +46,11 @@ export const UpdateCategoryDrawer = React.forwardRef<
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <div id={titleId} className="font-semibold capitalize">
-                    update category
+                  <div
+                    id={titleId}
+                    className="font-semibold capitalize"
+                  >
+                    {title}
                   </div>
 
                   <DrawerClose>
@@ -67,7 +70,7 @@ export const UpdateCategoryDrawer = React.forwardRef<
                   id={descriptionId}
                   className="text-sm first-letter:uppercase"
                 >
-                  update your existing category
+                  {description}
                 </div>
               </div>
 
@@ -78,6 +81,6 @@ export const UpdateCategoryDrawer = React.forwardRef<
       </DrawerPortal>
     </DrawerRoot>
   );
-});
+};
 
-UpdateCategoryDrawer.displayName = displayName;
+FormDrawer.displayName = displayName;

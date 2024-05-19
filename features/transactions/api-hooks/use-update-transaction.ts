@@ -5,15 +5,14 @@ import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'react-toastify';
 
 type ResponseType = InferResponseType<
-  (typeof honoClient.api.categories)[':id']['$delete']
+  (typeof honoClient.api.transactions)[':id']['$patch']
 >;
-
 type RequestType = InferRequestType<
-  (typeof honoClient.api.categories)[':id']['$delete']
->['param'];
+  (typeof honoClient.api.transactions)[':id']['$patch']
+>['json'];
 
-export const useDeleteCategory = (
-  id: string,
+export const useUpdateTransaction = (
+  id?: string,
   options?: MutationOptions,
 ) => {
   const { onError, onSettled, onSuccess } = options || {};
@@ -21,22 +20,24 @@ export const useDeleteCategory = (
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationKey: ['categories', 'delete', id],
-    mutationFn: async ({ id }) => {
-      const res = await honoClient.api.categories[':id']['$delete']({
+    mutationKey: ['transactions', 'update', id],
+    mutationFn: async (json) => {
+      const res = await honoClient.api.transactions[':id']['$patch']({
         param: { id },
+        json,
       });
-
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-      queryClient.invalidateQueries({ queryKey: ['categories', id] });
-      toast.success('Category deleted');
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({
+        queryKey: ['transactions', id],
+      });
+      toast.success('Transaction updated');
       onSuccess?.();
     },
     onError: () => {
-      toast.error('Failed to delete category');
+      toast.error('Failed to update transaction');
       onError?.();
     },
     onSettled,

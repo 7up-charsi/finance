@@ -14,7 +14,7 @@ import {
 import React from 'react';
 import { LoadingButton } from './loading-button';
 
-export interface AlertDialogProps {
+export interface DeletionAlertProps {
   trigger?: React.ReactNode;
   title: string;
   loading?: boolean;
@@ -22,12 +22,12 @@ export interface AlertDialogProps {
   onSuccess?: () => void;
 }
 
-const displayName = 'AlertDialog';
+const displayName = 'DeletionAlert';
 
-export const AlertDialog = React.forwardRef<
+export const DeletionAlert = React.forwardRef<
   AlertDialogRootMethods,
-  AlertDialogProps
->((props: AlertDialogProps, forwardedRef) => {
+  DeletionAlertProps
+>((props: DeletionAlertProps, forwardedRef) => {
   const { title, loading, onCancel, onSuccess, trigger } = props;
 
   return (
@@ -41,8 +41,8 @@ export const AlertDialog = React.forwardRef<
           <AlertDialogTitle>{title} Deletion</AlertDialogTitle>
 
           <AlertDialogDescription>
-            Deleting your {title} is permanent and cannot be recovered. Are you
-            sure you want to proceed?
+            Deleting your {title} is permanent and cannot be
+            recovered. Are you sure you want to proceed?
           </AlertDialogDescription>
 
           <AlertDialogActions>
@@ -67,4 +67,4 @@ export const AlertDialog = React.forwardRef<
   );
 });
 
-AlertDialog.displayName = displayName;
+DeletionAlert.displayName = displayName;

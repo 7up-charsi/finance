@@ -4,14 +4,21 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { useUpdateAccountDrawer } from '../hooks/use-update-account-drawer';
-import { useGetAccount } from '../api-hooks/use-get-account';
-import { useUpdateAccount } from '../api-hooks/use-update-account';
-import { Button, DrawerClose, Input, Skeleton } from '@typeweave/react';
+import {
+  Button,
+  DrawerClose,
+  Input,
+  Skeleton,
+} from '@typeweave/react';
 import { LoadingButton } from '@/components/loading-button';
+import { useUpdateAccountState } from '@/features/accounts/hooks/use-update-account-state';
+import { useGetAccount } from '@/features/accounts/api-hooks/use-get-account';
+import { useUpdateAccount } from '@/features/accounts/api-hooks/use-update-account';
 
 const formScehma = z.object({
-  name: z.string().min(1, 'Name must contain at least 1 character(s)'),
+  name: z
+    .string()
+    .min(1, 'Name must contain at least 1 character(s)'),
 });
 
 type FormValues = z.input<typeof formScehma>;
@@ -23,7 +30,7 @@ const displayName = 'UpdateAccountForm';
 export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
   const {} = props;
 
-  const { onClose, id } = useUpdateAccountDrawer();
+  const { onClose, id } = useUpdateAccountState();
 
   const query = useGetAccount(id, { enabled: !!id });
 
@@ -63,7 +70,10 @@ export const UpdateAccountForm = (props: UpdateAccountFormProps) => {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-5 space-y-2"
+        >
           <Input
             label="name"
             required

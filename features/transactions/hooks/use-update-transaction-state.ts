@@ -8,7 +8,7 @@ type State = {
   onClose: () => void;
 };
 
-export const useUpdateCategoryDrawer = create<State>((set) => ({
+export const useUpdateTransactionState = create<State>((set) => ({
   id: undefined,
   open: false,
   onOpen: (id) => set({ open: true, id }),

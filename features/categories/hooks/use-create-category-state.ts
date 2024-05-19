@@ -7,7 +7,7 @@ type State = {
   onClose: () => void;
 };
 
-export const useCreateCategoryDrawer = create<State>((set) => ({
+export const useCreateCategoryState = create<State>((set) => ({
   open: false,
   onOpen: () => set({ open: true }),
   onOpenChange: (open) => set({ open }),

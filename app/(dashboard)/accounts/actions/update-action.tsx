@@ -1,4 +1,4 @@
-import { useUpdateAccountDrawer } from '@/features/accounts/hooks/use-update-account-drawer';
+import { useUpdateAccountState } from '@/features/accounts/hooks/use-update-account-state';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { Button } from '@typeweave/react';
 import { PencilIcon } from 'lucide-react';
@@ -14,9 +14,12 @@ const displayName = 'UpdateAction';
 export const UpdateAction = (props: UpdateActionProps) => {
   const { id, name } = props;
 
-  const open = useUpdateAccountDrawer((state) => state.onOpen);
+  const open = useUpdateAccountState((state) => state.onOpen);
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+  const isFetching = useIsFetching({
+    queryKey: ['accounts'],
+    exact: true,
+  });
 
   const mutatingSelf = useIsMutating({
     mutationKey: ['accounts', 'update', id],
@@ -40,7 +43,10 @@ export const UpdateAction = (props: UpdateActionProps) => {
       size="sm"
       onPress={() => open(id)}
       disabled={
-        !!mutatingSelf || !!isFetching || !!bulkDeleting || !!deletingSelf
+        !!mutatingSelf ||
+        !!isFetching ||
+        !!bulkDeleting ||
+        !!deletingSelf
       }
     >
       <PencilIcon />

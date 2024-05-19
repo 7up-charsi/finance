@@ -4,7 +4,7 @@ import React from 'react';
 import { AlertDialogRootMethods, Button } from '@typeweave/react';
 import { TrashIcon } from 'lucide-react';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
-import { AlertDialog } from '@/components/alert-dialog';
+import { DeletionAlert } from '@/components/deletion-alert';
 import { Loader } from '@/components/loader';
 import { useDeleteAccount } from '@/features/accounts/api-hooks/use-delete-account';
 
@@ -22,7 +22,10 @@ export const DeleteAction = (props: DeleteActionProps) => {
 
   const mutation = useDeleteAccount(id);
 
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+  const isFetching = useIsFetching({
+    queryKey: ['accounts'],
+    exact: true,
+  });
 
   const deletingSelf = mutation.isPending;
 
@@ -37,7 +40,7 @@ export const DeleteAction = (props: DeleteActionProps) => {
   });
 
   return (
-    <AlertDialog
+    <DeletionAlert
       ref={alertDialogRef}
       title="account"
       onSuccess={() => {
@@ -51,7 +54,10 @@ export const DeleteAction = (props: DeleteActionProps) => {
           size="sm"
           color="danger"
           disabled={
-            deletingSelf || !!isFetching || !!bulkDeleting || !!mutatingSelf
+            deletingSelf ||
+            !!isFetching ||
+            !!bulkDeleting ||
+            !!mutatingSelf
           }
         >
           {mutation.isPending ? <Loader /> : <TrashIcon />}

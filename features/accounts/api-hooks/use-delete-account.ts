@@ -12,7 +12,10 @@ type RequestType = InferRequestType<
   (typeof honoClient.api.accounts)[':id']['$delete']
 >['param'];
 
-export const useDeleteAccount = (id: string, options?: MutationOptions) => {
+export const useDeleteAccount = (
+  id: string,
+  options?: MutationOptions,
+) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();
@@ -28,7 +31,8 @@ export const useDeleteAccount = (id: string, options?: MutationOptions) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      toast.success('Category deleted');
+      queryClient.invalidateQueries({ queryKey: ['accounts', id] });
+      toast.success('Transaction deleted');
       onSuccess?.();
     },
     onError: () => {

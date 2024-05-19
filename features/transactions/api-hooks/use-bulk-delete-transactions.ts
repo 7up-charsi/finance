@@ -5,15 +5,14 @@ import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'react-toastify';
 
 type ResponseType = InferResponseType<
-  (typeof honoClient.api.categories)[':id']['$delete']
+  (typeof honoClient.api.transactions)['bulk-delete']['$post']
 >;
 
 type RequestType = InferRequestType<
-  (typeof honoClient.api.categories)[':id']['$delete']
->['param'];
+  (typeof honoClient.api.transactions)['bulk-delete']['$post']
+>['json'];
 
-export const useDeleteCategory = (
-  id: string,
+export const useBulkDeleteTransactions = (
   options?: MutationOptions,
 ) => {
   const { onError, onSettled, onSuccess } = options || {};
@@ -21,22 +20,23 @@ export const useDeleteCategory = (
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationKey: ['categories', 'delete', id],
-    mutationFn: async ({ id }) => {
-      const res = await honoClient.api.categories[':id']['$delete']({
-        param: { id },
+    mutationKey: ['transactions', 'bulk-delete'],
+    mutationFn: async (json) => {
+      const res = await honoClient.api.transactions[
+        'bulk-delete'
+      ].$post({
+        json,
       });
 
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-      queryClient.invalidateQueries({ queryKey: ['categories', id] });
-      toast.success('Category deleted');
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      toast.success('Transactions deleted');
       onSuccess?.();
     },
     onError: () => {
-      toast.error('Failed to delete category');
+      toast.error('Failed to delete transactions');
       onError?.();
     },
     onSettled,

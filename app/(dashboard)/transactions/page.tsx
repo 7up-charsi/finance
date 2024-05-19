@@ -20,21 +20,21 @@ import { BulkDeleteButton } from './actions/bulk-delete-button';
 import { DeleteAction } from './actions/delete-action';
 import { Loader } from '@/components/loader';
 import { UpdateAction } from './actions/update-action';
-import { useGetCategories } from '@/features/categories/api-hooks/use-get-categories';
-import { useCreateCategoryState } from '@/features/categories/hooks/use-create-category-state';
 import { FetchingIndicator } from '@/components/fetching-indicator';
+import { useGetTransactions } from '@/features/transactions/api-hooks/use-get-transactions';
+import { useCreateTransactionState } from '@/features/transactions/hooks/use-create-transaction-state';
 
-const CategoriesPage = () => {
-  const openCreateCategoryDrawer = useCreateCategoryState(
+const TransactionsPage = () => {
+  const openCreateAccountDrawer = useCreateTransactionState(
     (state) => state.onOpen,
   );
 
   const selectRowsRef = React.useRef<TableSelectRowRootMethods>(null);
 
-  const categoriesQuery = useGetCategories();
-  const categories = categoriesQuery.data;
+  const transactionsQuery = useGetTransactions();
+  const transactions = transactionsQuery.data;
 
-  if (categoriesQuery.isLoading) {
+  if (transactionsQuery.isLoading) {
     return (
       <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
         <div className="flex flex-row items-center justify-between gap-4">
@@ -58,16 +58,16 @@ const CategoriesPage = () => {
         <div className="-mt-24 rounded bg-background px-3 py-3 shadow-sm">
           <div className="flex flex-row items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold capitalize leading-none">
-              Categories
+              transactions
             </h1>
 
-            <FetchingIndicator page="categories" />
+            <FetchingIndicator page="transactions" />
 
             <Button
               variant="solid"
-              onPress={() => openCreateCategoryDrawer()}
+              onPress={() => openCreateAccountDrawer()}
             >
-              create category
+              create transaction
             </Button>
           </div>
 
@@ -77,7 +77,7 @@ const CategoriesPage = () => {
               className="h-full grow"
               label="filter"
               hideLabel
-              placeholder="Filer categories"
+              placeholder="Filer accounts"
               endContent={
                 <Button
                   isIconOnly
@@ -107,7 +107,7 @@ const CategoriesPage = () => {
 
           <div className="mt-4 overflow-x-auto border-b">
             <TableRoot
-              data={categories ?? []}
+              data={transactions ?? []}
               getRowKey={(row) => row.id}
               columns={[
                 {
@@ -161,7 +161,7 @@ const CategoriesPage = () => {
               />
             </TableRoot>
 
-            {categories?.length ? null : (
+            {transactions?.length ? null : (
               <div className="flex h-14 items-center justify-center">
                 <span>No results found</span>
               </div>
@@ -172,7 +172,7 @@ const CategoriesPage = () => {
             <TableSelectedRows>
               {({ selectedCount }) => (
                 <span>
-                  {selectedCount} of {categories?.length} row(s)
+                  {selectedCount} of {transactions?.length} row(s)
                   selected
                 </span>
               )}
@@ -191,4 +191,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage;
+export default TransactionsPage;

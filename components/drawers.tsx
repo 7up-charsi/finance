@@ -1,35 +1,24 @@
 'use client';
 
-import { CreateAccountDrawer } from '@/features/accounts/components/create-account-drawer';
-import { CreateAccountForm } from '@/features/accounts/components/create-account-form';
-import { UpdateAccountDrawer } from '@/features/accounts/components/update-account-drawer';
-import { UpdateAccountForm } from '@/features/accounts/components/update-account-form';
-import { CreateCategoryDrawer } from '@/features/categories/components/create-category-drawer';
-import { CreateCategoryForm } from '@/features/categories/components/create-category-form';
-import { UpdateCategoryDrawer } from '@/features/categories/components/update-category-drawer';
-import { UpdateCategoryForm } from '@/features/categories/components/update-category-form';
 import React from 'react';
+import { CreateCategory } from '@/features/categories/components/create-category';
+import { UpdateCategory } from '@/features/categories/components/update-category';
+import { CreateAccount } from '@/features/accounts/components/create-account';
+import { UpdateAccount } from '@/features/accounts/components/update-account';
+import { CreateTransaction } from '@/features/transactions/components/create-transaction';
 
 const displayName = 'Drawers';
 
 export const Drawers = () => {
   return (
     <>
-      <UpdateAccountDrawer>
-        <UpdateAccountForm />
-      </UpdateAccountDrawer>
+      <CreateAccount />
+      <UpdateAccount />
 
-      <CreateAccountDrawer>
-        <CreateAccountForm />
-      </CreateAccountDrawer>
+      <CreateCategory />
+      <UpdateCategory />
 
-      <UpdateCategoryDrawer>
-        <UpdateCategoryForm />
-      </UpdateCategoryDrawer>
-
-      <CreateCategoryDrawer>
-        <CreateCategoryForm />
-      </CreateCategoryDrawer>
+      <CreateTransaction />
     </>
   );
 };

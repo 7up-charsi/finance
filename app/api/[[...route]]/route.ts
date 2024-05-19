@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { accountsRoutes } from './accounts';
 import { categoriesRoutes } from './categories';
-import { transactionsRoutes } from './categories copy';
+import { transactionsRoutes } from './transactions';
 
 export const runtime = 'edge';
 

@@ -3,10 +3,19 @@ import React from 'react';
 import { Loader } from './loader';
 import { VisuallyHidden } from '@typeweave/react';
 
-const displayName = 'AccountsFetchingIndicator';
+interface FetchingIndicatorProps {
+  page: string;
+}
 
-export const AccountsFetchingIndicator = () => {
-  const isFetching = useIsFetching({ queryKey: ['accounts'], exact: true });
+const displayName = 'FetchingIndicator';
+
+export const FetchingIndicator = (props: FetchingIndicatorProps) => {
+  const { page } = props;
+
+  const isFetching = useIsFetching({
+    queryKey: [page],
+    exact: true,
+  });
 
   return isFetching ? (
     <>
@@ -16,11 +25,11 @@ export const AccountsFetchingIndicator = () => {
 
       <VisuallyHidden>
         <div aria-live="polite" aria-atomic="true">
-          background accounts fetching
+          background {page} fetching
         </div>
       </VisuallyHidden>
     </>
   ) : null;
 };
 
-AccountsFetchingIndicator.displayName = displayName;
+FetchingIndicator.displayName = displayName;

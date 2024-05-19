@@ -19,19 +19,20 @@ import {
 import { BulkDeleteButton } from './actions/bulk-delete-button';
 import { DeleteAction } from './actions/delete-action';
 import { Loader } from '@/components/loader';
-import { AccountsFetchingIndicator } from '@/components/accounts-fetching-indicator';
 import { UpdateAction } from './actions/update-action';
-import { useCreateAccountDrawer } from '@/features/accounts/hooks/use-create-account-drawer';
 import { useGetAccounts } from '@/features/accounts/api-hooks/use-get-accounts';
+import { useCreateAccountState } from '@/features/accounts/hooks/use-create-account-state';
+import { FetchingIndicator } from '@/components/fetching-indicator';
 
 const AccountsPage = () => {
-  const openCreateAccountDrawer = useCreateAccountDrawer(
+  const openCreateAccountDrawer = useCreateAccountState(
     (state) => state.onOpen,
   );
 
   const selectRowsRef = React.useRef<TableSelectRowRootMethods>(null);
 
   const accountsQuery = useGetAccounts();
+  const accounts = accountsQuery.data;
 
   if (accountsQuery.isLoading) {
     return (
@@ -60,9 +61,12 @@ const AccountsPage = () => {
               Accounts
             </h1>
 
-            <AccountsFetchingIndicator />
+            <FetchingIndicator page="accounts" />
 
-            <Button variant="solid" onPress={() => openCreateAccountDrawer()}>
+            <Button
+              variant="solid"
+              onPress={() => openCreateAccountDrawer()}
+            >
               create account
             </Button>
           </div>
@@ -103,7 +107,7 @@ const AccountsPage = () => {
 
           <div className="mt-4 overflow-x-auto border-b">
             <TableRoot
-              data={accountsQuery.data ?? []}
+              data={accounts ?? []}
               getRowKey={(row) => row.id}
               columns={[
                 {
@@ -151,10 +155,13 @@ const AccountsPage = () => {
                 },
               ]}
             >
-              <Table variant="strip" className="min-w-full whitespace-nowrap" />
+              <Table
+                variant="strip"
+                className="min-w-full whitespace-nowrap"
+              />
             </TableRoot>
 
-            {accountsQuery.data?.length ? null : (
+            {accounts?.length ? null : (
               <div className="flex h-14 items-center justify-center">
                 <span>No results found</span>
               </div>
@@ -165,14 +172,18 @@ const AccountsPage = () => {
             <TableSelectedRows>
               {({ selectedCount }) => (
                 <span>
-                  {selectedCount} of {accountsQuery.data?.length} row(s)
+                  {selectedCount} of {accounts?.length} row(s)
                   selected
                 </span>
               )}
             </TableSelectedRows>
 
             {/* TODO: make Pagination works by creating api end point */}
-            <Pagination size="sm" color="default" className="self-end" />
+            <Pagination
+              size="sm"
+              color="default"
+              className="self-end"
+            />
           </div>
         </div>
       </TableSelectRowRoot>

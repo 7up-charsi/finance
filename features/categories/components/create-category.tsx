@@ -1,29 +1,28 @@
-'use client';
-
+import React from 'react';
+import { useCreateCategoryState } from '../hooks/use-create-category-state';
+import { FormDrawer } from '@/components/form-drawer';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import { useCreateCategory } from '../api-hooks/use-create-category';
 import { Button, DrawerClose, Input } from '@typeweave/react';
-import { InfoIcon } from 'lucide-react';
-import { useCreateAccountDrawer } from '../hooks/use-create-account-drawer';
-import { useCreateAccount } from '../api-hooks/use-create-account';
 import { LoadingButton } from '@/components/loading-button';
+import { InfoIcon } from 'lucide-react';
 
 const formScehma = z.object({
-  name: z.string().min(1, 'Name must contain at least 1 character(s)'),
+  name: z
+    .string()
+    .min(1, 'Name must contain at least 1 character(s)'),
 });
 
 type FormValues = z.input<typeof formScehma>;
 
-interface CreateAccountFormProps {}
+const displayName = 'CreateCategory';
 
-const displayName = 'CreateAccountForm';
+export const CreateCategory = () => {
+  const { open, onOpenChange } = useCreateCategoryState();
 
-export const CreateAccountForm = (props: CreateAccountFormProps) => {
-  const {} = props;
-
-  const { onClose } = useCreateAccountDrawer();
+  const { onClose } = useCreateCategoryState();
 
   const {
     register,
@@ -41,7 +40,7 @@ export const CreateAccountForm = (props: CreateAccountFormProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const preventCloseRef = React.useRef(false);
 
-  const mutation = useCreateAccount({
+  const mutation = useCreateCategory({
     onSettled: () => {
       if (preventCloseRef.current) inputRef.current?.focus();
       if (!preventCloseRef.current) onClose?.();
@@ -57,7 +56,12 @@ export const CreateAccountForm = (props: CreateAccountFormProps) => {
   };
 
   return (
-    <>
+    <FormDrawer
+      open={open}
+      onOpenChange={onOpenChange}
+      title="create category"
+      description="create a new category to track your transactions."
+    >
       <form
         ref={formRef}
         onSubmit={handleSubmit(onSubmit)}
@@ -136,13 +140,13 @@ export const CreateAccountForm = (props: CreateAccountFormProps) => {
             <code className="mx-1 rounded bg-muted-3 px-1 py-1">
               Ctrl + Enter
             </code>
-            to create a new account without closing the drawer. This will allow
-            you to create multiple accounts quickly!
+            to create a new category without closing the drawer. This
+            will allow you to create multiple categories quickly!
           </span>
         </div>
       </form>
-    </>
+    </FormDrawer>
   );
 };
 
-CreateAccountForm.displayName = displayName;
+CreateCategory.displayName = displayName;
