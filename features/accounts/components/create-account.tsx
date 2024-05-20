@@ -8,6 +8,7 @@ import { useCreateAccount } from '../api-hooks/use-create-account';
 import { Button, DrawerClose, Input } from '@typeweave/react';
 import { LoadingButton } from '@/components/loading-button';
 import { InfoIcon } from 'lucide-react';
+import { mergeRefs } from '@typeweave/react-utils';
 
 const formScehma = z.object({
   name: z
@@ -53,6 +54,8 @@ export const CreateAccount = () => {
     mutation.mutate(values);
   };
 
+  const registerNameInput = register('name');
+
   return (
     <FormDrawer
       open={open}
@@ -66,11 +69,11 @@ export const CreateAccount = () => {
         className="mt-5 space-y-4"
       >
         <Input
-          inputRef={inputRef}
+          {...registerNameInput}
+          ref={mergeRefs(registerNameInput.ref, inputRef)}
           label="name"
           required
           placeholder="e.g. Cash, Bank, Credit Card"
-          {...register('name')}
           className="w-full"
           error={!!errors.name}
           errorMessage={errors.name?.message}

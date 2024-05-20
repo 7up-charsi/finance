@@ -2,7 +2,7 @@ import { InfoIcon } from 'lucide-react';
 import React from 'react';
 import { useCreateTransactionState } from '../hooks/use-create-transaction-state';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useCreateTransaction } from '../api-hooks/use-create-transaction';
 import { z } from 'zod';
 import { LoadingButton } from '@/components/loading-button';
@@ -18,30 +18,40 @@ import { useGetCategories } from '@/features/categories/api-hooks/use-get-catego
 import { useCreateCategory } from '@/features/categories/api-hooks/use-create-category';
 import { useGetAccounts } from '@/features/accounts/api-hooks/use-get-accounts';
 import { useCreateAccount } from '@/features/accounts/api-hooks/use-create-account';
-import { insertTransactionsSchema } from '@/db/schema';
+import { mergeProps, mergeRefs } from '@typeweave/react-utils';
+import { AmountInput } from '@/components/amount-input';
 
 const displayName = 'CreateTransaction';
 
 const formScehma = z.object({
-  data: z.coerce.date(),
-  account: z.string(),
+  date: z.coerce.date(),
+  accountId: z.string(),
   categoryId: z.string().nullable().optional(),
   payee: z.string(),
   amount: z.string(),
   notes: z.string().nullable().optional(),
 });
 
-const apiSchema = insertTransactionsSchema.omit({ id: true });
-
 type FormValues = z.input<typeof formScehma>;
-type ApiFormValues = z.input<typeof apiSchema>;
 
 export const CreateTransaction = () => {
   const { onClose, onOpenChange, open } = useCreateTransactionState();
 
-  const { handleSubmit, reset } = useForm<FormValues>({
+  const {
+    handleSubmit,
+    reset,
+    register,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: zodResolver(formScehma),
-    // defaultValues: {},
+    defaultValues: {
+      accountId: '',
+      amount: '',
+      categoryId: '',
+      notes: '',
+      payee: '',
+    },
   });
 
   const infoId = React.useId();
@@ -87,15 +97,17 @@ export const CreateTransaction = () => {
     }),
   );
 
-  const isPending =
-    mutation.isPending ||
-    categoryMutation.isPending ||
-    accountMutation.isPending;
-
   const isLoading = categoryQuery.isLoading || accountQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
-    // mutation.mutate(values);
+    mutation.mutate({
+      accountId: values.accountId,
+      amount: +values.amount,
+      date: values.date,
+      payee: values.payee,
+      categoryId: values.categoryId,
+      notes: values.notes,
+    });
   };
 
   if (isLoading) {
@@ -112,16 +124,131 @@ export const CreateTransaction = () => {
       <form
         ref={formRef}
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-5 space-y-4"
+        className="my-5 space-y-4"
       >
-        <Autocomplete
-          options={accountsOptions}
-          renderInput={(props) => (
-            <Input
-              label="account"
-              {...autocompleteInputAdapter(props)}
+        <Input
+          type="date"
+          label="date"
+          {...register('date')}
+          className="w-full"
+        />
+
+        <Controller
+          name="accountId"
+          control={control}
+          disabled={categoryMutation.isPending}
+          render={({
+            field: { value, onChange, ref, onBlur, name, disabled },
+            fieldState,
+          }) => (
+            <Autocomplete
+              value={value ? { label: '', value } : null}
+              onChange={(e) => {
+                onChange({
+                  target: { value: e.target.value?.value },
+                });
+              }}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+              creatable
+              onCreate={onCreateAccount}
+              options={accountsOptions}
+              loading={accountMutation.isPending}
+              renderInput={(props) => (
+                <Input
+                  label="account"
+                  className="w-full"
+                  name={name}
+                  disabled={disabled}
+                  placeholder="Select an account"
+                  {...autocompleteInputAdapter(props)}
+                  {...mergeProps(
+                    { onBlur },
+                    { onBlur: props.onBlur },
+                  )}
+                  ref={mergeRefs(props.inputRef, ref)}
+                  error={!!fieldState.error}
+                  errorMessage={fieldState.error?.message}
+                />
+              )}
             />
           )}
+        />
+
+        <Controller
+          name="categoryId"
+          control={control}
+          disabled={categoryMutation.isPending}
+          render={({
+            field: { value, onChange, ref, onBlur, name, disabled },
+            fieldState,
+          }) => (
+            <Autocomplete
+              value={value ? { label: '', value } : null}
+              onChange={(e) => {
+                onChange({
+                  target: { value: e.target.value?.value },
+                });
+              }}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+              creatable
+              onCreate={onCreateCategory}
+              options={categoryOptions}
+              loading={categoryMutation.isPending}
+              renderInput={(props) => (
+                <Input
+                  label="category"
+                  className="w-full"
+                  name={name}
+                  disabled={disabled}
+                  placeholder="Select a category"
+                  {...autocompleteInputAdapter(props)}
+                  {...mergeProps(
+                    { onBlur },
+                    { onBlur: props.onBlur },
+                  )}
+                  ref={mergeRefs(props.inputRef, ref)}
+                  error={!!fieldState.error}
+                  errorMessage={fieldState.error?.message}
+                />
+              )}
+            />
+          )}
+        />
+
+        <Input
+          label="payee"
+          {...register('payee')}
+          className="w-full"
+          placeholder="Add a payee"
+          error={!!errors.payee}
+          errorMessage={errors.payee?.message}
+        />
+
+        <Controller
+          name="amount"
+          control={control}
+          render={({ field, fieldState }) => (
+            <AmountInput
+              label="amount"
+              className="w-full"
+              placeholder="0.00"
+              {...field}
+              error={!!fieldState.error}
+              errorMessage={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Input
+          multiline
+          label="notes"
+          {...register('notes')}
+          className="w-full"
+          placeholder="optional notes"
         />
 
         <div className="flex justify-end gap-2">

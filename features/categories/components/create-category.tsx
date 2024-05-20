@@ -8,6 +8,7 @@ import { useCreateCategory } from '../api-hooks/use-create-category';
 import { Button, DrawerClose, Input } from '@typeweave/react';
 import { LoadingButton } from '@/components/loading-button';
 import { InfoIcon } from 'lucide-react';
+import { mergeRefs } from '@typeweave/react-utils';
 
 const formScehma = z.object({
   name: z
@@ -55,6 +56,8 @@ export const CreateCategory = () => {
     mutation.mutate(values);
   };
 
+  const registerNameInput = register('name');
+
   return (
     <FormDrawer
       open={open}
@@ -68,11 +71,10 @@ export const CreateCategory = () => {
         className="mt-5 space-y-4"
       >
         <Input
-          inputRef={inputRef}
+          ref={mergeRefs(registerNameInput.ref, inputRef)}
           label="name"
           required
           placeholder="e.g. Cash, Bank, Credit Card"
-          {...register('name')}
           className="w-full"
           error={!!errors.name}
           errorMessage={errors.name?.message}
