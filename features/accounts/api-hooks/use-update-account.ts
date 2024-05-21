@@ -11,7 +11,10 @@ type RequestType = InferRequestType<
   (typeof honoClient.api.accounts)[':id']['$patch']
 >['json'];
 
-export const useUpdateAccount = (id?: string, options?: MutationOptions) => {
+export const useUpdateAccount = (
+  id?: string,
+  options?: MutationOptions,
+) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();
@@ -28,6 +31,7 @@ export const useUpdateAccount = (id?: string, options?: MutationOptions) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       queryClient.invalidateQueries({ queryKey: ['accounts', id] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       toast.success('Account updated');
       onSuccess?.();
     },

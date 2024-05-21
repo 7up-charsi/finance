@@ -11,7 +11,10 @@ type RequestType = InferRequestType<
   (typeof honoClient.api.categories)[':id']['$patch']
 >['json'];
 
-export const useUpdateCategory = (id?: string, options?: MutationOptions) => {
+export const useUpdateCategory = (
+  id?: string,
+  options?: MutationOptions,
+) => {
   const { onError, onSettled, onSuccess } = options || {};
 
   const queryClient = useQueryClient();
@@ -28,6 +31,7 @@ export const useUpdateCategory = (id?: string, options?: MutationOptions) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['categories', id] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       toast.success('Category updated');
       onSuccess?.();
     },

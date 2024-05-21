@@ -33,6 +33,7 @@ export const AmountInput = React.forwardRef<
       }
       startContent={
         <Button
+          excludeFromTabOrder
           color={isIncome ? 'success' : 'danger'}
           aria-label={`change to ${isIncome ? 'expense' : 'income'}`}
           type="button"

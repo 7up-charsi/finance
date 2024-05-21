@@ -11,7 +11,7 @@ type State = {
 export const useUpdateCategoryState = create<State>((set) => ({
   id: undefined,
   open: false,
-  onOpen: (id) => set({ open: true, id }),
+  onOpen: (id) => set({ open: !!id, id }),
   onOpenChange: (open) =>
     set((prev) => ({ open, id: !open ? undefined : prev.id })),
   onClose: () => set({ open: false, id: undefined }),

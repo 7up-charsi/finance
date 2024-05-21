@@ -5,6 +5,7 @@ import { XIcon } from 'lucide-react';
 import {
   Button,
   Checkbox,
+  Chip,
   Input,
   Pagination,
   Skeleton,
@@ -23,9 +24,13 @@ import { UpdateAction } from './actions/update-action';
 import { FetchingIndicator } from '@/components/fetching-indicator';
 import { useGetTransactions } from '@/features/transactions/api-hooks/use-get-transactions';
 import { useCreateTransactionState } from '@/features/transactions/hooks/use-create-transaction-state';
+import { format } from 'date-fns';
+import { amountFromMiliunits, formatCurrency } from '@/lib/utils';
+import { AccountColumn } from '@/components/account-column';
+import { CategoryColumn } from '@/components/category-column';
 
 const TransactionsPage = () => {
-  const openCreateAccountDrawer = useCreateTransactionState(
+  const openCreateTransactionDrawer = useCreateTransactionState(
     (state) => state.onOpen,
   );
 
@@ -65,7 +70,7 @@ const TransactionsPage = () => {
 
             <Button
               variant="solid"
-              onPress={() => openCreateAccountDrawer()}
+              onPress={() => openCreateTransactionDrawer()}
             >
               create transaction
             </Button>
@@ -130,13 +135,53 @@ const TransactionsPage = () => {
                   classNames: { th: 'w-16' },
                 },
                 {
-                  identifier: 'name',
-                  header: () => 'name',
-                  accessor: (row) => row.name,
-                  classNames: {
-                    th: 'text-left',
-                    td: 'text-left px-3',
+                  identifier: 'date',
+                  header: () => 'date',
+                  accessor: (row) => row.date,
+                  cell: (val) => (
+                    <span>{format(val, 'dd MMMM, yyyy')}</span>
+                  ),
+                },
+                {
+                  identifier: 'category',
+                  header: () => 'category',
+                  accessor: (row) => row.category,
+                  cell: (val, row) => (
+                    <CategoryColumn
+                      id={row.categoryId}
+                      category={val}
+                    />
+                  ),
+                },
+                {
+                  identifier: 'payee',
+                  header: () => 'payee',
+                  accessor: (row) => row.payee,
+                },
+                {
+                  identifier: 'amount',
+                  header: () => 'amount',
+                  accessor: (row) => row.amount,
+                  cell: (val) => {
+                    const amount = parseFloat(val);
+
+                    return (
+                      <Chip
+                        color={amount < 0 ? 'danger' : 'success'}
+                        label={formatCurrency(
+                          amountFromMiliunits(amount),
+                        )}
+                      />
+                    );
                   },
+                },
+                {
+                  identifier: 'account',
+                  header: () => 'account',
+                  accessor: (row) => row.account,
+                  cell: (val, row) => (
+                    <AccountColumn id={row.accountId} account={val} />
+                  ),
                 },
                 {
                   identifier: 'actions',

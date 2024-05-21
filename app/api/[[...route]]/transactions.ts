@@ -51,7 +51,7 @@ export const transactionsRoutes = new Hono()
           category: categories.name,
           categoryId: transactions.categoryId,
           payee: transactions.payee,
-          ampunt: transactions.amount,
+          amount: transactions.amount,
           notes: transactions.notes,
           account: accounts.name,
           accountId: transactions.accountId,
@@ -105,7 +105,7 @@ export const transactionsRoutes = new Hono()
           date: transactions.date,
           categoryId: transactions.categoryId,
           payee: transactions.payee,
-          ampunt: transactions.amount,
+          amount: transactions.amount,
           notes: transactions.notes,
           accountId: transactions.accountId,
         })

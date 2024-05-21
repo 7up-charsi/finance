@@ -13,7 +13,7 @@ export const useGetTransactions = (options?: QueryOptions) => {
 
   const query = useQuery({
     enabled,
-    queryKey: ['transactions', { from, to, accountId }],
+    queryKey: ['transactions'],
     queryFn: async () => {
       const res = await honoClient.api.transactions.$get({
         query: { accountId, from, to },

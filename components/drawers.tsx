@@ -6,6 +6,7 @@ import { UpdateCategory } from '@/features/categories/components/update-category
 import { CreateAccount } from '@/features/accounts/components/create-account';
 import { UpdateAccount } from '@/features/accounts/components/update-account';
 import { CreateTransaction } from '@/features/transactions/components/create-transaction';
+import { UpdateTransaction } from '@/features/transactions/components/update-transaction';
 
 const displayName = 'Drawers';
 
@@ -19,6 +20,7 @@ export const Drawers = () => {
       <UpdateCategory />
 
       <CreateTransaction />
+      <UpdateTransaction />
     </>
   );
 };
