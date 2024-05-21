@@ -50,7 +50,9 @@ export const accountsRoutes = new Hono()
           name: accounts.name,
         })
         .from(accounts)
-        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+        .where(
+          and(eq(accounts.userId, auth.userId), eq(accounts.id, id)),
+        );
 
       if (!data) {
         return c.json({ error: 'Not found' }, 404);
@@ -137,7 +139,9 @@ export const accountsRoutes = new Hono()
       const [data] = await db
         .update(accounts)
         .set(values)
-        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+        .where(
+          and(eq(accounts.userId, auth.userId), eq(accounts.id, id)),
+        )
         .returning();
 
       if (!data) {
@@ -171,7 +175,9 @@ export const accountsRoutes = new Hono()
 
       const [data] = await db
         .delete(accounts)
-        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+        .where(
+          and(eq(accounts.userId, auth.userId), eq(accounts.id, id)),
+        )
         .returning({ id: accounts.id });
 
       if (!data) {

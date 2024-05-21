@@ -6,13 +6,9 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateAccount } from '../api-hooks/use-update-account';
-import {
-  Button,
-  DrawerClose,
-  Input,
-  Skeleton,
-} from '@typeweave/react';
+import { Button, DrawerClose, Input } from '@typeweave/react';
 import { LoadingButton } from '@/components/loading-button';
+import { Loader } from '@/components/loader';
 
 const formScehma = z.object({
   name: z
@@ -60,15 +56,9 @@ export const UpdateAccount = () => {
       title="update account"
       description="update your existing account"
     >
-      {' '}
       {query.isLoading ? (
-        <div className="mt-5 space-y-2">
-          <Skeleton variant="rounded" className="h-10 w-full" />
-
-          <div className="flex justify-end gap-2">
-            <Skeleton variant="rounded" className="h-10 w-24" />
-            <Skeleton variant="rounded" className="h-10 w-24" />
-          </div>
+        <div className="mt-10 flex w-full justify-center">
+          <Loader />
         </div>
       ) : (
         <form

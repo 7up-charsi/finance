@@ -3,7 +3,6 @@ import {
   NumberInput,
   NumberInputProps,
 } from '@typeweave/react';
-import { mergeRefs } from '@typeweave/react-utils';
 import { MinusCircleIcon, PlusCircleIcon } from 'lucide-react';
 import React from 'react';
 
@@ -19,27 +18,16 @@ export const AmountInput = React.forwardRef<
 >((props, forwardedRef) => {
   const { value, onChange, ...restProps } = props;
 
-  const [isIncome, setIsIncome] = React.useState(true);
-
-  const innerRef = React.useRef<HTMLInputElement>(null);
-
-  const parsedValue = parseFloat(value);
+  const isIncome = !value.startsWith('-');
 
   return (
     <NumberInput
-      ref={mergeRefs(forwardedRef, innerRef)}
+      ref={forwardedRef}
       {...restProps}
       value={value}
-      onChange={(e) => {
-        onChange?.(e);
-
-        const parsedValue = parseFloat(e.target.value);
-
-        if (parsedValue > 0) setIsIncome(true);
-        if (parsedValue < 0) setIsIncome(false);
-      }}
+      onChange={onChange}
       helperText={
-        parsedValue
+        value
           ? `this will count as ${isIncome ? 'income' : 'expense'}`
           : '[+] indicates income and [-] indicates expense'
       }
@@ -51,14 +39,11 @@ export const AmountInput = React.forwardRef<
           isIconOnly
           size="sm"
           onPress={() => {
-            setIsIncome((prev) => !prev);
-
-            if (innerRef.current?.value)
-              onChange?.({
-                target: {
-                  value: `${+innerRef.current.value * -1}`,
-                },
-              } as never);
+            onChange?.({
+              target: {
+                value: `${parseFloat(value) ? +value * -1 : -1}`,
+              },
+            } as never);
           }}
         >
           {isIncome ? <PlusCircleIcon /> : <MinusCircleIcon />}
